@@ -42,7 +42,9 @@ describe('Board', function() {
       });
       expect(mines).toEqual(10);
     });
+  });
 
+  describe('determines mine set', () => {
     it('should not move the mines after they are set', () => {
       board.clear(1);
       const mineCounts1 = [];
@@ -60,7 +62,7 @@ describe('Board', function() {
     });
 
     it('should not put a mine in a cleared cell', () => {
-      board = new Board(2, 2, 100);
+      board = new Board(5, 3, 100);
       board.clear(1);
       let mines = 0;
       const spots = board.board;
@@ -87,5 +89,23 @@ describe('Board', function() {
       });
       expect(mineCounts1).not.toEqual(mineCounts2);
     });
+
+    it('has a max 10 mines per cell', () => {
+      board = new Board(2, 2, 100);
+      board.clear(1);
+      let mines = 0;
+      const spots = board.board;
+      spots.forEach((spot) => {
+        mines += spot.mineCount;
+      });
+      expect(mines).toEqual(30);
+      expect(board.board[1].mineCount).toEqual(0);
+    });
+  });
+
+  describe('clear', () => {
+    it('if you clear a mine you lose');
+
+    it('if you clear all non mines you win');
   });
 });

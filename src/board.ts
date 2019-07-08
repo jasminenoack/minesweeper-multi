@@ -12,6 +12,9 @@ export class Board {
   private width: number;
   public board: Spot[];
   public minesSet: boolean;
+  private maxMines = 10;
+  private lost: boolean;
+  private won: boolean;
 
   constructor(height = 8, width = 8, mines = 10) {
     this.mines = mines;
@@ -32,25 +35,45 @@ export class Board {
    * @param index
    */
   public clear(index: number) {
-    this.board[index].cleared = true;
+    const spot = this.board[index];
+    spot.cleared = true;
     if (!this.minesSet) {
       this.minesSet = true;
       this.setMines();
     }
+    if (spot.mineCount) {
+      this.lost = true;
+    }
   }
 
+  /**
+   * Set the placement of all of the mines
+   */
   private setMines() {
     let minesSet = 0;
     while (minesSet < this.mines && this.width * this.height > 1) {
       const randomCellIndex = this.getRandomCell();
       const randomCell = this.board[randomCellIndex];
-      if (!randomCell.cleared) {
+      if (!randomCell.cleared && randomCell.mineCount < this.maxMines) {
         randomCell.mineCount++;
         minesSet++;
+      } else {
+        let cellsAvailable = false;
+        this.board.forEach((spot) => {
+          if (!spot.cleared && spot.mineCount < this.maxMines) {
+            cellsAvailable = true;
+          }
+        });
+        if (!cellsAvailable) {
+          break;
+        }
       }
     }
   }
 
+  /**
+   * Choose a random cell in the puzzle
+   */
   private getRandomCell() {
     return Math.floor(Math.random() * this.height * this.width);
   }
