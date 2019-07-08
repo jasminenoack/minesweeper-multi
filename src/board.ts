@@ -11,6 +11,7 @@ export class Board {
   private height: number;
   private width: number;
   public board: Spot[];
+  public minesSet: boolean;
 
   constructor(height = 8, width = 8, mines = 10) {
     this.mines = mines;
@@ -24,6 +25,34 @@ export class Board {
         mineCount: 0,
       });
     }
+  }
+
+  /**
+   * Clear the space at the index
+   * @param index
+   */
+  public clear(index: number) {
+    this.board[index].cleared = true;
+    if (!this.minesSet) {
+      this.minesSet = true;
+      this.setMines();
+    }
+  }
+
+  private setMines() {
+    let minesSet = 0;
+    while (minesSet < this.mines && this.width * this.height > 1) {
+      const randomCellIndex = this.getRandomCell();
+      const randomCell = this.board[randomCellIndex];
+      if (!randomCell.cleared) {
+        randomCell.mineCount++;
+        minesSet++;
+      }
+    }
+  }
+
+  private getRandomCell() {
+    return Math.floor(Math.random() * this.height * this.width);
   }
 }
 

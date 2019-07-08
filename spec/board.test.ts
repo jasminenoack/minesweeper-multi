@@ -33,10 +33,59 @@ describe('Board', function() {
       expect(mines).toEqual(0);
     });
 
-    it('generates mines after the first clear');
+    it('generates mines after the first clear', () => {
+      board.clear(1);
+      let mines = 0;
+      const spots = board.board;
+      spots.forEach((spot) => {
+        mines += spot.mineCount;
+      });
+      expect(mines).toEqual(10);
+    });
 
-    it('creates a board with mines');
+    it('should not move the mines after they are set', () => {
+      board.clear(1);
+      const mineCounts1 = [];
+      const spots1 = board.board;
+      spots1.forEach((spot) => {
+        mineCounts1.push(spot.mineCount);
+      });
+      board.clear(2);
+      const mineCounts2 = [];
+      const spots2 = board.board;
+      spots2.forEach((spot) => {
+        mineCounts2.push(spot.mineCount);
+      });
+      expect(mineCounts1).toEqual(mineCounts2);
+    });
 
-    it('creates a board with custom mines');
+    it('should not put a mine in a cleared cell', () => {
+      board = new Board(2, 2, 100);
+      board.clear(1);
+      let mines = 0;
+      const spots = board.board;
+      spots.forEach((spot) => {
+        mines += spot.mineCount;
+      });
+      expect(mines).toEqual(100);
+      expect(board.board[1].mineCount).toEqual(0);
+    });
+
+    it('should set mines randomly', () => {
+      board.clear(1);
+      const mineCounts1 = [];
+      const spots1 = board.board;
+      spots1.forEach((spot) => {
+        mineCounts1.push(spot.mineCount);
+      });
+      board = new Board();
+      board.clear(1);
+      const mineCounts2 = [];
+      const spots2 = board.board;
+      spots2.forEach((spot) => {
+        mineCounts2.push(spot.mineCount);
+      });
+      expect(mineCounts1).not.toEqual(mineCounts2);
+    });
   });
 });
