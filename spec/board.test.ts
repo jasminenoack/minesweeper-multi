@@ -104,8 +104,53 @@ describe('Board', function() {
   });
 
   describe('clear', () => {
-    it('if you clear a mine you lose');
+    it('if you clear a mine you lose', () => {
+      board.clear(1);
+      let mineSpot;
+      const spots1 = board.board;
+      spots1.forEach((spot) => {
+        if (!mineSpot && spot.mineCount) {
+          mineSpot = spot.index;
+        }
+      });
+      expect(board.lost).not.toEqual(true);
+      board.clear(mineSpot);
+      expect(board.lost).toEqual(true);
+    });
 
-    it('if you clear all non mines you win');
+    it('if you clear all non mines you win', () => {
+      board = new Board(2, 2, 100);
+      board.clear(1);
+      expect(board.board[1].mineCount).toEqual(0);
+      expect(board.won).toEqual(true);
+
+      board = new Board(8, 8, 10);
+      board.clear(1);
+      expect(board.won).not.toEqual(false);
+      const spots = board.board;
+      spots.forEach((spot) => {
+        if (!spot.mineCount && !spot.cleared) {
+          board.clear(spot.index);
+        }
+      });
+      expect(board.board[1].mineCount).toEqual(0);
+      expect(board.won).toEqual(true);
+    });
+
+    it('cannot be won if there is a cleared mine', () => {
+      board = new Board(8, 8, 10);
+      board.clear(1);
+      expect(board.won).not.toEqual(false);
+      const spots = board.board;
+      spots.forEach((spot) => {
+        if (!spot.mineCount && !spot.cleared) {
+          board.clear(spot.index);
+        } else {
+          spot.cleared = true;
+        }
+      });
+      expect(board.board[1].mineCount).toEqual(0);
+      expect(board.won).toEqual(true);
+    });
   });
 });

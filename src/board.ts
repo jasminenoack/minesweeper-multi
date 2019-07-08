@@ -13,8 +13,8 @@ export class Board {
   public board: Spot[];
   public minesSet: boolean;
   private maxMines = 10;
-  private lost: boolean;
-  private won: boolean;
+  public lost: boolean;
+  public won: boolean;
 
   constructor(height = 8, width = 8, mines = 10) {
     this.mines = mines;
@@ -43,6 +43,8 @@ export class Board {
     }
     if (spot.mineCount) {
       this.lost = true;
+    } else if (this.checkWin()) {
+      this.won = true;
     }
   }
 
@@ -76,6 +78,19 @@ export class Board {
    */
   private getRandomCell() {
     return Math.floor(Math.random() * this.height * this.width);
+  }
+
+  /**
+   * Checks if all the non-mine cells are clear and no mine cells are clear
+   */
+  private checkWin() {
+    let won = true;
+    this.board.forEach((spot) => {
+      if (!spot.cleared && !spot.mineCount) {
+        won = false;
+      }
+    });
+    return won;
   }
 }
 
