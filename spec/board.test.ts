@@ -101,6 +101,36 @@ describe('Board', function() {
       expect(mines).toEqual(30);
       expect(board.board[1].mineCount).toEqual(0);
     });
+
+    it('should return mine counts', () => {
+      board.board = [
+        { mineCount: 5, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+        { mineCount: 3, index: 0, cleared: false },
+        { mineCount: 2, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+        { mineCount: 1, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+        { mineCount: 7, index: 0, cleared: false },
+        { mineCount: 2, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+        { mineCount: 0, index: 0, cleared: false },
+      ];
+      const counts = board.mineCounts();
+      expect(counts).toEqual({
+        1: 1,
+        2: 2,
+        3: 1,
+        4: 0,
+        5: 1,
+        6: 0,
+        7: 1,
+        8: 0,
+        9: 0,
+        10: 0,
+      });
+    });
   });
 
   describe('clear', () => {

@@ -92,9 +92,29 @@ export class Board {
     });
     return won;
   }
+
+  /**
+   * Return a dictionary that states how many of each mine count exist
+   */
+  public mineCounts() {
+    const counts = {};
+    for (let i = 1; i <= this.maxMines; i++) {
+      counts[i] = 0;
+    }
+    this.board.forEach((spot) => {
+      if (spot.mineCount) {
+        counts[spot.mineCount]++;
+      }
+    });
+    return counts;
+  }
 }
 
 // levels
 // 8 X 8 X 10
 // 16 X 16 X 40
 // 24 X 24 X 99
+
+// things to try
+// specific counts of each mine type
+// types using a greedy algorithm
