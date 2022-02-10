@@ -34,7 +34,7 @@
     "karma-typescript": "^3.0.13",
     "karma-webpack": "^2.0.4",
     "lodash": "^4.17.4",
-    "node-sass": "^4.5.3",
+    "node-sass": "^7.0.0",
     "ts-loader": "5.2.1",
     "tslint": "^5.16.0",
     "typescript": "^3.4.3",
